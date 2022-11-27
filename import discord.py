@@ -18,8 +18,26 @@ import pyautogui
 import discord
 from configparser import ConfigParser
 
+const { token } = require('./config.json');
 
+console.log(token);
 
+# Creates or checks for config
+if os.path.exists(os.getcwd() + "/config.json"):
+    
+    with open ("./config.json") as f:
+        configData = json.load(f)
+        if token "":
+            easygui.textbox("What is your discord bot token?")
+            token = easygui.textbox()
+            
+else:
+    configTemplate = {"token": "", "Prefix": "!"}
+    
+    with open(os.getcwd() + "/config.json", "w+") as f:
+        json.dump(configTemplate, f)
+        easygui.textbox("What is your discord bot token?")
+        token = easygui.textbox()
 
 
 
@@ -28,17 +46,7 @@ intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
 
 
-# Creates or checks for config
-if os.path.exists(os.getcwd() + "/config.json"):
-    
-    with open ("./config.json") as f:
-        configData = json.load(f)
-            
-else:
-    configTemplate = {"token": "", "Prefix": "!"}
-    
-    with open(os.getcwd() + "/config.json", "w+") as f:
-        json.dump(configTemplate, f)
+
 
 token = configData["token"]
 prefix = configData["Prefix"]
@@ -49,7 +57,6 @@ prefix = configData["Prefix"]
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    console.log()
     
 # Bot is checking messages
 @client.event
