@@ -22,10 +22,29 @@ intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
 
 
+# Creates or checks for config
+if os.path.exists(os.getcwd() + "/config.json"):
+    
+    with open ("./config.json") as f:
+        configData = json.load(f)
+            
+else:
+    configTemplate = {"token": "", "Prefix": "!"}
+    
+    with open(os.getcwd() + "/config.json", "w+") as f:
+        json.dump(configTemplate, f)
+
+token = configData["token"]
+prefix = configData["Prefix"]
+
  
+ 
+# Boots up the bot 
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    
+# Bot is checking messages
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -50,7 +69,7 @@ async def on_message(message):
                     channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
                     channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
                     channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
-                    channel_id_link = "https://youtube.com/channel/"+channel_id
+                    channel_id_link = "https://www.youtube.com/channel/"+channel_id
                     
                     
                     # Prints Channel information to console #
@@ -71,4 +90,4 @@ async def on_message(message):
                     
                     await message.channel.send(channel_id_link)
 
-client.run("token")
+client.run(token)
