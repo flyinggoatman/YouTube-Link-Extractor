@@ -17,10 +17,9 @@ import time
 import pyautogui
 import discord
 from configparser import ConfigParser
- 
+
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
- 
 
 
  
@@ -32,9 +31,10 @@ async def on_message(message):
     if message.author == client.user:
         return
  
-    if message.content.startswith('channel'):
+    if message.content.startswith('https://www.youtube.com/'):
         print (message.content)
         channelURL = message.content
+        await message.delete()
 
 
         if search("http", channelURL):
@@ -69,6 +69,6 @@ async def on_message(message):
                     r = requests.get(imgUrl, allow_redirects=True)
                     open(filename, 'wb').write(r.content)
                     
-                await message.channel.send("channel_id_link")
+                    await message.channel.send(channel_id_link)
 
 client.run("token")
