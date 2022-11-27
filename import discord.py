@@ -21,7 +21,7 @@ from configparser import ConfigParser
 
 
 
-
+#test
 
 
 intents = discord.Intents.all()
