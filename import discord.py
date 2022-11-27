@@ -35,7 +35,9 @@ if os.path.exists(os.getcwd() + "/config.json"):
         configData = json.load(f)
             
 else:
-    configTemplate = {"token": "", "Prefix": "!"}
+    easygui.textbox("Whats your token?")
+    token =  easygui.textbox()
+    configTemplate = {"token": token, "Prefix": "!"}
     
     with open(os.getcwd() + "/config.json", "w+") as f:
         json.dump(configTemplate, f)
@@ -49,7 +51,6 @@ prefix = configData["Prefix"]
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    console.log()
     
 # Bot is checking messages
 @client.event
