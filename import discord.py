@@ -71,4 +71,4 @@ async def on_message(message):
                     
                 await message.channel.send("channel_id_link")
 
-client.run("OTM4MjEyMDIxOTkwNzM1OTAy.GpUbk3.ZHZjBkp1tELJGrZTkSiklAR4yPyQ7GgIq4ydgs")
+client.run("token")
