@@ -1,3 +1,4 @@
+import discord
 import re
 import easygui
 from easygui import *
@@ -14,6 +15,7 @@ import pyperclip
 import win32com.client as comclt
 import time
 import pyautogui
+import discord
 
 
 
@@ -75,11 +77,11 @@ if search("http", channel):
             pyperclip.copy(channel_id_link)
             
             #Opens discord #
-            discord = '#discord channel link#'
-            webbrowser.open_new_tab(discord)
-            time.sleep(8)
-            with pyautogui.hotkey('ctrl', 'v'):
-                 pyautogui.press('Enter')
+            # discord = 'https://discord.com/channels/938207947425710110/938207947878703187'
+            # webbrowser.open_new_tab(discord)
+            # time.sleep(8)
+            # with pyautogui.hotkey('ctrl', 'v'):
+            #      pyautogui.press('Enter')
             
             
             
@@ -89,6 +91,8 @@ if search("http", channel):
 #             The effect is that calling hotkey('ctrl', 'shift', 'c') would perform a "Ctrl-Shift-C" hotkey/keyboard shortcut press.
 # else:
     easygui.msgbox("Llnk not supported.")
+    
+    
     
                         
                         
