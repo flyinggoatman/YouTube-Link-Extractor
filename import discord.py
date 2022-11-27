@@ -43,6 +43,7 @@ prefix = configData["Prefix"]
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    console.log()
     
 # Bot is checking messages
 @client.event
@@ -50,9 +51,10 @@ async def on_message(message):
     if message.author == client.user:
         return
  
-    if message.content.startswith('https://www.youtube.com/'):
+    if message.content.startswith('/channel '):
         print (message.content)
         channelURL = message.content
+        channelURL = channelURL.replace("/channel ", "")
         await message.delete()
 
 
