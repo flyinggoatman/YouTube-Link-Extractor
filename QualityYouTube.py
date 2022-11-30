@@ -29,10 +29,12 @@ if os.path.exists(os.getcwd() + "/config.json"):
     with open("./config.json") as f:
         configData = json.load(f) 
 else:
-    token = str(input("Bot Token: "))
-    discordChannel = str(input("Channel ID:  "))
+    print("Please enter your token and the channel ID of the Discord channel you'd like to use.")
+    print("If left blank, you'll need to go to the config.json to set them.")
+    token = str(input("Bot Token: ") or "token goes here...")
+    discordChannel = str(input("Channel ID:  ") or "000000000000000000")
     configTemplate = {"Token": (token), "Prefix": "!","discordChannel": (discordChannel)}
-    print("The script will now crash and show an error. Run python3 QualityYouTube.py again.")
+    print("The script will now crash and show an error. Run 'python QualityYouTube.py' again.")
     with open(os.getcwd() + "/config.json", "w+") as f:
         json.dump(configTemplate, f) 
 token = configData["Token"]
@@ -53,7 +55,7 @@ async def on_message(message):
         channelURL = channelURL.replace("/channel ", "")
         print(channelURL)
         discordChannelInt = int(discordChannel)
-        if not (discordChannelInt == message.channel.id):
+        if (discordChannelInt == message.channel.id):
             if re.search("http", channelURL):
                 if re.search("://", channelURL):
                     if re.search("youtu", channelURL):
@@ -100,7 +102,9 @@ async def on_message(message):
                         author = message.author
                         await message.channel.send(author.mention+noURL+timeOutMessage10, delete_after=num10)
             else:
-                return
+                
+                print("incorrect channel")
+                
 
     
 
