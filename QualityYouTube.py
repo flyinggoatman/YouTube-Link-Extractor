@@ -50,8 +50,8 @@ async def on_message(message):
         channelURL = message.content
         channelURL = channelURL.replace("/channel ", "")
         print(channelURL)
-        DiscordChannel = int(discordChannel)
-        if not (DiscordChannel == message.channel.id):
+        discordChannelInt = int(discordChannel)
+        if not (discordChannelInt == message.channel.id):
             if re.search("http", channelURL):
                 if re.search("://", channelURL):
                     if re.search("youtu", channelURL):
