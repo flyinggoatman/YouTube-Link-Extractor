@@ -17,7 +17,6 @@ import time
 import pyautogui
 import discord
 from configparser import ConfigParser
-import datetime
 
 
 intents = discord.Intents.all()
