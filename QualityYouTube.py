@@ -71,9 +71,7 @@ async def on_message(message):
                         print("Channel Name: "+channel_name)
                         print("Channel Logo: "+channel_logo)
                         print("Channel ID: "+channel_id_link)
-                        
                         author = message.author
-                        
                         #Messages
                         Message_1 = channel_name+" was posted by "+(author.mention)+"(now.shifttime(""))"+""
                         timeOutMessage10 = " This message will be deleted in 10 seounds."
