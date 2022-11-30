@@ -27,10 +27,12 @@ client = discord.Client(command_prefix='/', intents=intents)
 # Creates or checks for config
 if os.path.exists(os.getcwd() + "/config.json"):
     with open("./config.json") as f:
-        configData = json.load(f)
-
+        configData = json.load(f) 
 else:
-    configTemplate = {"Token": "", "Prefix": "!","discordChannel": ""}
+    token = str(input("Bot Token: "))
+    discordChannel = str(input("Channel ID:  "))
+    configTemplate = {"Token": (token), "Prefix": "!","discordChannel": (discordChannel)}
+    print("The script will now crash and show an error. Run python3 QualityYouTube.py again.")
     with open(os.getcwd() + "/config.json", "w+") as f:
         json.dump(configTemplate, f) 
 token = configData["Token"]
