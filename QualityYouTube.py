@@ -17,8 +17,6 @@ import time
 import pyautogui
 import discord
 from configparser import ConfigParser
-
-
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
 
@@ -59,7 +57,7 @@ async def on_message(message):
                 if re.search("://", channelURL):
                     if re.search("youtu", channelURL):
                         
-                        
+                        await message.delete()
                         soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
                         data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
                         json_data = json.loads(data)
@@ -91,7 +89,7 @@ async def on_message(message):
                         
                         
                         
-                        await message.channel.send(channel_id_link)
+                        await message.channel.send(channel_name+" - "+channel_id_link)
                     elif message.content.endswith('.com/'):
                         await message.channel.send(author.mention+notChannel+timeOutMessage60, delete_after=num60)
                     elif not message.content.includes('channel') or message.content('user') or message.content('@'):
