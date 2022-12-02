@@ -1,7 +1,4 @@
-import discord
 import re
-import easygui
-from easygui import *
 from re import search
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -15,11 +12,14 @@ import pyperclip
 import win32com.client as comclt
 import time
 import pyautogui
-import discord
 from configparser import ConfigParser
+import discord
+from pytube import YouTube
+from pytube import Channel
+
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
-
+YouTubeDomain = "https://www.youtube.com/channel/"
 
 # Creates or checks for config
 if os.path.exists(os.getcwd() + "/config.json"):
@@ -44,64 +44,144 @@ async def on_ready():
 # Bot is checking messages
 @client.event
 async def on_message(message):
+    author = message.author
+    timeOutMessage10 = " This message will be deleted in 10 seounds."
+    timeOutMessage60 = " This message will be deleted in 60 seounds."
+    noURL = " This does not contain a URL."
+    invalidURL = " This URL is not supported. Please enter a valid URL."
+    notChannel =  """Make sure the channel follows one of the following formats starting with http or https. 
+    \r - http:://youtube.com/user/username
+    \r - http://youtube.com/channel/username
+    \r - http://youtube.com/@username\r\r
+    ***We hope to add video support soon***"""
+    num60 = 60
+    num10 = 10
     if message.author == client.user:
        return    
-    if message.content.startswith('/channel '):
-        print (message.content)
+    if re.search("http", message.content):
         channelURL = message.content
-        channelURL = channelURL.replace("/channel ", "")
-        print(channelURL)
         discordChannelInt = int(discordChannel)
         if (discordChannelInt == message.channel.id):
             if re.search("http", channelURL):
                 if re.search("://", channelURL):
                     if re.search("youtu", channelURL):
-                        
                         await message.delete()
-                        soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
-                        data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
-                        json_data = json.loads(data)
+                        if re.search ("/channel/", channelURL):
+                            soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
+                            data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
+                            json_data = json.loads(data)
                         
-                        # Finds channel information #
-                        channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
-                        channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
-                        channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
-                        channel_id_link = "https://www.youtube.com/channel/"+channel_id
-                        # Prints Channel information to console #
-                        print("Channel ID: "+channel_id)
-                        print("Channel Name: "+channel_name)
-                        print("Channel Logo: "+channel_logo)
-                        print("Channel ID: "+channel_id_link)
-                        author = message.author
-                        #Messages
-                        Message_1 = channel_name+" was posted by "+(author.mention)+"(now.shifttime(""))"+""
-                        timeOutMessage10 = " This message will be deleted in 10 seounds."
-                        timeOutMessage60 = " This message will be deleted in 60 seounds."
-                        noURL = " This does not contain a URL."
-                        invalidURL = " This URL is not supported. Please enter a valid URL."
-                        notChannel =  """Make sure the channel follows one of the following formats starting with http or https. 
-                        \r - http:://youtube.com/user/username
-                        \r - http://youtube.com/channel/username
-                        \r - http://youtube.com/@username\r\r
-                        ***We hope to add video support soon***"""
-                        num60 = 60
-                        num10 = 10
+                            channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
+                            channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
+                            channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
+                            channel_id_link = YouTubeDomain+channel_id
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel Logo: "+channel_logo)
+                            print("Channel ID: "+channel_id_link)
+                        elif re.search ("@", channelURL):
+                            soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
+                            data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
+                            json_data = json.loads(data)
                         
+                            channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
+                            channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
+                            channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
+                            channel_id_link = YouTubeDomain+channel_id
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel Logo: "+channel_logo)
+                            print("Channel ID: "+channel_id_link)
+                        elif re.search ("/user/", channelURL):
+                            soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
+                            data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
+                            json_data = json.loads(data)
                         
+                            channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
+                            channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
+                            channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
+                            channel_id_link = YouTubeDomain+channel_id
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel Logo: "+channel_logo)
+                            print("Channel ID: "+channel_id_link)
+                        elif re.search ("/c/", channelURL):
+                            soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
+                            data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
+                            json_data = json.loads(data)
                         
-                        await message.channel.send(channel_name+" - "+channel_id_link)
-                    elif message.content.endswith('.com/'):
-                        await message.channel.send(author.mention+notChannel+timeOutMessage60, delete_after=num60)
-                    elif not message.content.includes('channel') or message.content('user') or message.content('@'):
-                        author = message.author
-                        await message.channel.send(author.mention+invalidURL+timeOutMessage60, delete_after=num60)
-                    elif message.content.excludes('.com') or message.content.excludes('wwww') or message.content.excludes(''):
-                        author = message.author
-                        await message.channel.send(author.mention+noURL+timeOutMessage10, delete_after=num10)
-            else:
+                            channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
+                            channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
+                            channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
+                            channel_id_link = YouTubeDomain+channel_id
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel Logo: "+channel_logo)
+                            print("Channel ID: "+channel_id_link)
+                            
+                        elif re.search ("com/watch", channelURL):
+                            YTV = YouTube(channelURL)
+                            channel_id = YTV.channel_id
+                            channel_id_link = YTV.channel_url
+
+                            c = Channel(channel_id_link)
+                            channel_name =c.channel_name
+                            
+                            
+                            
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel ID: "+channel_id_link)
+                            
+                            
+                            
+                        elif re.search ("/shorts/", channelURL):  
+                            YTV = YouTube(channelURL)
+                            channel_id = YTV.channel_id
+                            channel_id_link = YTV.channel_url
+
+                            c = Channel(channel_id_link)
+                            channel_name =c.channel_name
+                            
+                            
+                            
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel ID: "+channel_id_link)
+                            
+                            
+                            
+                        elif re.search("youtu.be", channelURL):
+                            YTV = YouTube(channelURL)
+                            channel_id = YTV.channel_id
+                            channel_id_link = YTV.channel_url
+
+                            c = Channel(channel_id_link)
+                            channel_name =c.channel_name
+                            
+                            
+                            
+                            print("Channel ID: "+channel_id)
+                            print("Channel Name: "+channel_name)
+                            print("Channel ID: "+channel_id_link)
+                            
                 
-                print("incorrect channel")
-                
+               
+                                   
+                    # Prints Channel information to console #
+                    await message.channel.send(channel_name+" - "+channel_id_link)
+                elif message.content.endswith('.com/'):
+                    await message.channel.send(author.mention+notChannel+timeOutMessage60, delete_after=num60)
+                elif not message.content.includes('channel') or message.content('user') or message.content('@'):
+                    author = message.author
+                    await message.channel.send(author.mention+invalidURL+timeOutMessage60, delete_after=num60)
+                elif message.content.excludes('.com') or message.content.excludes('wwww') or message.content.excludes(''):
+                    author = message.author
+                    await message.channel.send(author.mention+noURL+timeOutMessage10, delete_after=num10)
+                else:
+                        
+                        print("incorrect channel")
+                        
 
     
 
