@@ -54,6 +54,8 @@ async def on_message(message):
     \r - http://youtube.com/channel/username
     \r - http://youtube.com/@username\r\r
     ***We hope to add video support soon***"""
+    timeStanpIncluded = "Please remove the time stamp from the URL.\nhttps://youtu.be/agEapr94odU?t=100 -> https://youtu.be/agEapr94odU\n Basically remove the ***?t=100***\n"
+    youTubeViwers = 'You may also find sucess in repasting the channel inside chat, sometimes the bot bugs out and posts a channel called "YouTube Viwers" without reason'
     num60 = 60
     num10 = 10
     if message.author == client.user:
@@ -168,14 +170,19 @@ async def on_message(message):
                 
                
                                    
-                    # Prints Channel information to console #
-                    await message.channel.send(channel_name+" - "+channel_id_link)
+                    
+                    if re.search ("UCMDQxm7cUx3yXkfeHa5zJIQ", channel_id_link):
+                        await message.channel.send(timeStanpIncluded+timeOutMessage10+"\n\n\n"+youTubeViwers, delete_after=num10)
+                    else:
+                        await message.channel.send(channel_name+" - "+channel_id_link)
+                        
+                    
                 elif message.content.endswith('.com/'):
                     await message.channel.send(author.mention+notChannel+timeOutMessage60, delete_after=num60)
                 elif not message.content.includes('channel') or message.content('user') or message.content('@'):
                     author = message.author
                     await message.channel.send(author.mention+invalidURL+timeOutMessage60, delete_after=num60)
-                elif message.content.excludes('.com') or message.content.excludes('wwww') or message.content.excludes(''):
+                elif message.content.excludes('.com') or message.content.excludes('www') or message.content.excludes(''):
                     author = message.author
                     await message.channel.send(author.mention+noURL+timeOutMessage10, delete_after=num10)
                 else:
