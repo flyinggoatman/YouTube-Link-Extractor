@@ -18,6 +18,7 @@ import openpyxl
 
 ## This is meant to create a exel file containing all the channels that have been procesed.
 
+YouTubeDomain = "https://www.youtube.com/channel/"
 def exel(channel_name, channel_id_link, channel_id, channel_logo):
     
 
@@ -79,7 +80,7 @@ def BeautifulSoup1(channelURL):
         print("Channel Name: "+channel_name)
         print("Channel Logo: "+channel_logo)
         print("Channel ID: "+channel_id_link)
-        return channelURL
+        return channel_name, channel_id_link, channel_id, channel_logo
 
 
 
@@ -103,73 +104,26 @@ channelURL = "https://www.youtube.com/watch?v=CpIAmXmM4uc"
 
 
 #This takes the channelURL and decides if it's a video or channel URL and then if it's one of the supported urls.
-if re.search("http", channelURL):
-    if re.search("://", channelURL):
-        if re.search("youtu",channelURL):
-            if re.search("/user/", channelURL):
-                BeautifulSoup1(channelURL)
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-            elif re.search("/c/", channelURL):
-                BeautifulSoup1(channelURL)
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()                
-                
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-                print("/c/")
-            elif re.search("/channel/", channelURL):
-                BeautifulSoup(channelURL)
-    
-                
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()
-                
-                
-                
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-                print("/channel/")
-            elif re.search("/@", channelURL):
-                BeautifulSoup1(channelURL)
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()
-    
-    
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-            elif re.search("youtu.be", channelURL):
-                
-                
-                channel_id_link, video = videoVersion()
-                channelURL = channel_id_link
-                BeautifulSoup1(channelURL)
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-                print("Extracted from video link.")
-            elif re.search ("com/watch", channelURL):
-                
-                channel_id_link, video = videoVersion()
-                channelURL = channel_id_link
-                BeautifulSoup1(channelURL)
-                channelURL = print(BeautifulSoup1(channelURL))
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1(channelURL)
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-                print("Extracted from video link.")
-            elif re.search ("/shorts/", channelURL): 
-                
+if re.search("http", channelURL) and re.search("://", channelURL) and re.search("youtu",channelURL):
 
-                
-                channel_id_link, video = videoVersion()
-                channelURL = channel_id_link
-                BeautifulSoup1(channelURL)
-                channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1()
-    
-                exel(channel_name, channel_id_link, channel_id, channel_logo)
-                print("Extracted from Shorts link.")
-            else:
-                
-                error = error(channelURL)
-                error()
+    if re.search("/user/", channelURL) or re.search("/c/", channelURL) or re.search("/channel/", channelURL) or re.search("/@", channelURL):
+        
+        channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1(channelURL)
+
+        exel(channel_name, channel_id_link, channel_id, channel_logo)
+        print("/channel/")
+    elif re.search("youtu.be", channelURL) or re.search("com/watch", channelURL) or re.search("/shorts/", channelURL):
+        
+        
+        channel_id_link, video = videoVersion()
+        channelURL = channel_id_link
+        channel_name, channel_id_link, channel_id, channel_logo = BeautifulSoup1(channelURL)
+
+        exel(channel_name, channel_id_link, channel_id, channel_logo)
+        print("Extracted from video link.")
+    else:
+        
+        print("Error")
                 
 
     
