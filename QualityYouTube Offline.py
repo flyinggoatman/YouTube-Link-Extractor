@@ -16,23 +16,8 @@ from bs4 import BeautifulSoup
 import json
 import openpyxl
 
-def exel(channel_name, channel_id_link, channel_id):
-    
 
-
-    # Give the location of the file
-    path = "C:\\Users\\tom87\\test\\channels.xlsx"
-
-    workbook_obj = openpyxl.load_workbook(path)
-    sheet_obj = workbook_obj.active
-    col1 = "None"
-    col2 = channel_name
-    col3 = channel_id_link
-    col4 = channel_id
-    sheet_obj.append([col1, col2, col3, col4])
-    workbook_obj.save(path)
-
-def exel2(channel_name, channel_id_link, channel_id, channel_logo):
+def exel(channel_name, channel_id_link, channel_id, channel_logo):
     
 
 
@@ -170,7 +155,7 @@ if re.search("http", channelURL):
                 print("Channel Name: "+channel_name)
                 print("Channel ID: "+channel_id_link)
     
-                exel2(channel_name, channel_id_link, channel_id)
+                exel(channel_name, channel_id_link, channel_id)
                 print("Extracted from video link.")
             elif re.search ("com/watch", channelURL):
                 YTV = YouTube(channelURL)
@@ -199,7 +184,7 @@ if re.search("http", channelURL):
                 
                 
     
-                exel2(channel_name, channel_id_link, channel_id)
+                exel(channel_name, channel_id_link, channel_id)
                 print("Extracted from video link.")
             elif re.search ("/shorts/", channelURL): 
                 YTV = YouTube(channelURL)
@@ -228,7 +213,7 @@ if re.search("http", channelURL):
                 
                 
                 
-                exel2(channel_name, channel_id_link, channel_id)
+                exel(channel_name, channel_id_link, channel_id)
                 print("Extracted from Shorts link.")
             else:
                 
