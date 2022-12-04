@@ -41,10 +41,10 @@ def exel2(channel_name, channel_id_link, channel_id, channel_logo):
 
     workbook_obj = openpyxl.load_workbook(path)
     sheet_obj = workbook_obj.active
+    col1 = channel_logo
     col2 = channel_name
     col3 = channel_id_link
     col4 = channel_id
-    col1 = channel_logo
     sheet_obj.append([col1, col2, col3, col4])
     sheet_obj.append([col1])
     workbook_obj.save(path)
