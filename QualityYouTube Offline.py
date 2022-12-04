@@ -25,10 +25,10 @@ def exel(channel_name, channel_id_link, channel_id):
 
     workbook_obj = openpyxl.load_workbook(path)
     sheet_obj = workbook_obj.active
+    col1 = "None"
     col2 = channel_name
     col3 = channel_id_link
     col4 = channel_id
-    col1 = "None"
     sheet_obj.append([col1, col2, col3, col4])
     workbook_obj.save(path)
 
@@ -41,7 +41,11 @@ def exel2(channel_name, channel_id_link, channel_id, channel_logo):
 
     workbook_obj = openpyxl.load_workbook(path)
     sheet_obj = workbook_obj.active
-    col1 = channel_logo
+    if re.search("None", channel_logo):
+        
+        col1 = channel_logo
+    else:
+        col1 = "None"
     col2 = channel_name
     col3 = channel_id_link
     col4 = channel_id
