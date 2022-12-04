@@ -15,10 +15,14 @@ from pytube import Channel
 from bs4 import BeautifulSoup
 import json
 import openpyxl
+# The following variable is a test one. You can change it to a channel or video url.
+channelURL = input("Enter a channel or video URL.")
+
+YouTubeDomain = "https://www.youtube.com/channel/"
+
 
 ## This is meant to create a exel file containing all the channels that have been procesed.
 
-YouTubeDomain = "https://www.youtube.com/channel/"
 def exel(channel_name, channel_id_link, channel_id, channel_logo):
     
 
@@ -28,10 +32,10 @@ def exel(channel_name, channel_id_link, channel_id, channel_logo):
 
     workbook_obj = openpyxl.load_workbook(path)
     sheet_obj = workbook_obj.active
+    col1 = channel_logo
     col2 = channel_name
     col3 = channel_id_link
     col4 = channel_id
-    col1 = channel_logo
     sheet_obj.append([col1, col2, col3, col4])
     sheet_obj.append([col1])
     workbook_obj.save(path)
@@ -99,8 +103,7 @@ def error(channelURL):
 
 ## Processing URL ##
 
-# The following variable is a test one. You can change it to a channel or video url.
-channelURL = "https://www.youtube.com/watch?v=CpIAmXmM4uc"
+
 
 
 #This takes the channelURL and decides if it's a video or channel URL and then if it's one of the supported urls.
