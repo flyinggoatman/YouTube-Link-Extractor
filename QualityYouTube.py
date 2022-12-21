@@ -63,7 +63,7 @@ async def on_message(message):
     if re.search("http", message.content):
         channelURL = message.content
         discordChannelInt = int(discordChannel)
-        if (discordChannelInt == message.channel.id):
+        if discordChannelInt == message.channel.id:
             if re.search("http", channelURL) and search("://", channelURL) and search("youtu", channelURL):
                 await message.delete()
                 if re.search ("/channel/", channelURL) or re.search ("@", channelURL) or re.search ("/user/", channelURL) or re.search ("/c/", channelURL):
@@ -80,7 +80,7 @@ async def on_message(message):
                     print("Channel Logo: "+channel_logo)
                     print("Channel ID: "+channel_id_link)
                     
-                elif re.search ("com/watch", channelURL) or re.search ("/shorts/", channelURL) or re.search ("youtu.be", channelURL):
+                elif re.search ("com/watch", channelURL) or re.search ("/shorts/", channelURL) or re.search ("youtu.be", channelURL) or re.search("?list=", channelURL):
                     YTV = YouTube(channelURL)
                     channel_id = YTV.channel_id
                     channel_id_link = YTV.channel_url
@@ -100,20 +100,11 @@ async def on_message(message):
             if re.search ("UCMDQxm7cUx3yXkfeHa5zJIQ", channel_id_link):
                 await message.channel.send(timeStanpIncluded+timeOutMessage10+"\n\n\n"+youTubeViwers, delete_after=num10)
             else:
-                await message.channel.send(channel_name+" - "+channel_id_link)
-                
+                await message.channel.send(channel_name+" - "+channel_id_link)     
             
-        elif message.content.endswith('.com/'):
-            await message.channel.send(author.mention+notChannel+timeOutMessage60, delete_after=num60)
-        elif not message.content.includes('channel') or message.content('user') or message.content('@'):
-            author = message.author
-            await message.channel.send(author.mention+invalidURL+timeOutMessage60, delete_after=num60)
-        elif message.content.excludes('.com') or message.content.excludes('www') or message.content.excludes(''):
-            author = message.author
-            await message.channel.send(author.mention+noURL+timeOutMessage10, delete_after=num10)
         else:
-                
-                print("incorrect channel")
+            print("""Link not supported or wrong channel.
+Link was posted insice channel """+message.channel.name)
                         
 
     
