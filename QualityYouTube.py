@@ -16,6 +16,7 @@ from configparser import ConfigParser
 import discord
 from pytube import YouTube
 from pytube import Channel
+from discord.ext import commands
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
@@ -39,8 +40,16 @@ prefix = configData["Prefix"]
 discordChannel = configData["discordChannel"]
 # Boots up the bot 
 @client.event
+
 async def on_ready():
+    client.run
+    discordChannelInt = int(discordChannel)
+    discordName = client.get_channel(discordChannelInt)
     print('We have logged in as {0.user}'.format(client))
+    print('Using Discord channel: ', discordName)
+    print('The bot has now fully booted up and may be used. \nPlease be advised this bot only supports one Discord server at a time. Future updates will allow for more than one server to be active at a time.')
+    
+    
 # Bot is checking messages
 @client.event
 async def on_message(message):
@@ -60,10 +69,12 @@ async def on_message(message):
     num10 = 10
     if message.author == client.user:
        return    
-    if re.search("http", message.content):
+    
+    
+    discordChannelInt = int(discordChannel)
+    if discordChannelInt == message.channel.id:
         channelURL = message.content
-        discordChannelInt = int(discordChannel)
-        if discordChannelInt == message.channel.id:
+        if re.search("http", message.content):
             if re.search("http", channelURL) and search("://", channelURL) and search("youtu", channelURL):
                 await message.delete()
                 if re.search ("/channel/", channelURL) or re.search ("@", channelURL) or re.search ("/user/", channelURL) or re.search ("/c/", channelURL):
@@ -103,9 +114,11 @@ async def on_message(message):
                 await message.channel.send(channel_name+" - "+channel_id_link)     
             
         else:
+    
             print("""Link not supported or wrong channel.
 Link was posted insice channel """+message.channel.name)
-                        
+    else:
+        return                   
 
     
 
