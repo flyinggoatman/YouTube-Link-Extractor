@@ -17,6 +17,8 @@ import discord
 from pytube import YouTube
 from pytube import Channel
 from discord.ext import commands
+import mysql.connector
+
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
