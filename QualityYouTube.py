@@ -16,13 +16,20 @@ from configparser import ConfigParser
 import discord
 from pytube import YouTube
 from pytube import Channel
-from discord.ext import commands
+from discord import app_commands
 import mysql.connector
 
 
 intents = discord.Intents.all()
 client = discord.Client(command_prefix='/', intents=intents)
+tree = app_commands.CommandTree(client)
 YouTubeDomain = "https://www.youtube.com/channel/"
+
+# Adding command function
+
+
+
+
 
 # Creates or checks for config
 if os.path.exists(os.getcwd() + "/config.json"):
@@ -33,7 +40,7 @@ else:
     print("If left blank, you'll need to go to the config.json to set them.")
     token = str(input("Bot Token: ") or "token goes here...")
     discordChannel = str(input("Channel ID:  ") or "000000000000000000")
-    configTemplate = {"Token": (token), "Prefix": "!","discordChannel": (discordChannel)}
+    configTemplate = {"Token": (token), "Prefix": "/","discordChannel": (discordChannel)}
     print("The script will now crash and show an error. Run 'python QualityYouTube.py' again.")
     with open(os.getcwd() + "/config.json", "w+") as f:
         json.dump(configTemplate, f) 
@@ -51,6 +58,12 @@ async def on_ready():
     print('Using Discord channel: ', discordName)
     print('The bot has now fully booted up and may be used. \nPlease be advised this bot only supports one Discord server at a time. Future updates will allow for more than one server to be active at a time.')
     
+    
+    
+    
+
+    
+
     
 # Bot is checking messages
 @client.event
@@ -80,39 +93,47 @@ async def on_message(message):
             if re.search("http", channelURL) and search("://", channelURL) and search("youtu", channelURL):
                 await message.delete()
                 if re.search ("/channel/", channelURL) or re.search ("@", channelURL) or re.search ("/user/", channelURL) or re.search ("/c/", channelURL):
-                    soup = BeautifulSoup(requests.get(channelURL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
-                    data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
-                    json_data = json.loads(data)
-                
-                    channel_id   = json_data["header"]["c4TabbedHeaderRenderer"]["channelId"]
-                    channel_name = json_data["header"]["c4TabbedHeaderRenderer"]["title"]
-                    channel_logo = json_data["header"]["c4TabbedHeaderRenderer"]["avatar"]["thumbnails"][2]["url"]
-                    channel_id_link = YouTubeDomain+channel_id
-                    print("Channel ID: "+channel_id)
-                    print("Channel Name: "+channel_name)
-                    print("Channel Logo: "+channel_logo)
-                    print("Channel ID: "+channel_id_link)
+                    
+                    # This code detects if the given URL is a channel. If the check comes back as True then it grabs the data using pytube.
+                    
+                    def channel_pull(channelURL):
+                        c = Channel(channelURL)
+                        channel_name = c.channel_name
+                        channel_id_link = "http://youtube.com/channel/"+c.channel_id
+                        channel_id =  c.channel_id
+                        print("Channel Name: "+channel_name)
+                        print("Channel Link: "+channel_id_link)
+                        print("Channel ID: "+channel_id)
+                        return channel_name, channel_id_link, channel_id
+                    
                     
                 elif re.search ("com/watch", channelURL) or re.search ("/shorts/", channelURL) or re.search ("youtu.be", channelURL) or re.search("?list=", channelURL):
-                    YTV = YouTube(channelURL)
-                    channel_id = YTV.channel_id
-                    channel_id_link = YTV.channel_url
+                    
+                    # TH
+                    
+                    def video_pull(channelURL):    
+                        YTV = YouTube(channelURL)
+                        channel_id = YTV.channel_id
+                        channel_id_link = YTV.channel_url
 
-                    c = Channel(channel_id_link)
-                    channel_name =c.channel_name
-                    
-                    
-                    
-                    print("Channel ID: "+channel_id)
-                    print("Channel Name: "+channel_name)
-                    print("Channel ID: "+channel_id_link)
-        
-        
+                        c = Channel(channel_id_link)
+                        channel_name =c.channel_name
+                        
+                        
+                        
+                        print("Channel Name: "+channel_name)
+                        print("Channel ID: "+channel_id_link)
+                        print("Channel ID: "+channel_id)
+                        return channel_name, channel_id_link, channel_id
+            
                             
             
             if re.search ("UCMDQxm7cUx3yXkfeHa5zJIQ", channel_id_link):
                 await message.channel.send(timeStanpIncluded+timeOutMessage10+"\n\n\n"+youTubeViwers, delete_after=num10)
+                video_pull(channelURL)
             else:
+                channel_name = channel_pull(channel_name)
+                channel_id_link = channel_pull(channel_id_link)
                 await message.channel.send(channel_name+" - "+channel_id_link)     
             
         else:
@@ -121,7 +142,10 @@ async def on_message(message):
 Link was posted insice channel """+message.channel.name)
     else:
         return                   
-
-    
+# @tree.command(name = "dchannel", description="Set bots home.", guild = discord.Object(id = 938207947425710110))
+# async def self(interaction: discord.Interaction, name: str):
+#     if re.search(name, "hello"):
+#         interaction.response.send_message(f"Adding making channel bots home.")
+#         interaction.channel.send("hello")
 
 client.run(token)
