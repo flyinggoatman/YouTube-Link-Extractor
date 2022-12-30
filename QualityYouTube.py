@@ -17,6 +17,7 @@ import discord
 from pytube import YouTube
 from pytube import Channel
 from discord import app_commands
+import pytube
 import mysql.connector
 
 
@@ -95,45 +96,42 @@ async def on_message(message):
                 if re.search ("/channel/", channelURL) or re.search ("@", channelURL) or re.search ("/user/", channelURL) or re.search ("/c/", channelURL):
                     
                     # This code detects if the given URL is a channel. If the check comes back as True then it grabs the data using pytube.
+                
+                        
+                    c = Channel(channelURL)
+                    channel_name = c.channel_name
                     
-                    def channel_pull(channelURL):
-                        c = Channel(channelURL)
-                        channel_name = c.channel_name
-                        channel_id_link = "http://youtube.com/channel/"+c.channel_id
-                        channel_id =  c.channel_id
-                        print("Channel Name: "+channel_name)
-                        print("Channel Link: "+channel_id_link)
-                        print("Channel ID: "+channel_id)
-                        return channel_name, channel_id_link, channel_id
+                    channel_id =  c.channel_id
+                    channel_id_link = "http://youtube.com/channel/"+channel_id
+                    
+                    print("Channel Name: "+channel_name)
+                    print("Channel ID: "+channel_id) 
+                    print("Channel Link: "+channel_id_link)
                     
                     
                 elif re.search ("com/watch", channelURL) or re.search ("/shorts/", channelURL) or re.search ("youtu.be", channelURL) or re.search("?list=", channelURL):
                     
-                    # TH
+                    # This code checks to see if the link is a video.
                     
-                    def video_pull(channelURL):    
-                        YTV = YouTube(channelURL)
-                        channel_id = YTV.channel_id
-                        channel_id_link = YTV.channel_url
+                        
+                    YTV = YouTube(channelURL)
+                    channel_id = YTV.channel_id
+                    channel_id_link = YTV.channel_url
 
-                        c = Channel(channel_id_link)
-                        channel_name =c.channel_name
+                    c = Channel(channel_id_link)
+                    channel_name =c.channel_name
+                    channel_id = c.channel_id
+                    
                         
-                        
-                        
-                        print("Channel Name: "+channel_name)
-                        print("Channel ID: "+channel_id_link)
-                        print("Channel ID: "+channel_id)
-                        return channel_name, channel_id_link, channel_id
-            
-                            
+                    print("Channel ID: "+channel_id)
+                    print("Channel Name: "+channel_name)
+                    print("channel Link: "+channel_id_link)
             
             if re.search ("UCMDQxm7cUx3yXkfeHa5zJIQ", channel_id_link):
                 await message.channel.send(timeStanpIncluded+timeOutMessage10+"\n\n\n"+youTubeViwers, delete_after=num10)
-                video_pull(channelURL)
             else:
-                channel_name = channel_pull(channel_name)
-                channel_id_link = channel_pull(channel_id_link)
+                channel_name = channel_name
+                channel_id_link = channel_id_link
                 await message.channel.send(channel_name+" - "+channel_id_link)     
             
         else:
@@ -142,10 +140,10 @@ async def on_message(message):
 Link was posted insice channel """+message.channel.name)
     else:
         return                   
-# @tree.command(name = "dchannel", description="Set bots home.", guild = discord.Object(id = 938207947425710110))
-# async def self(interaction: discord.Interaction, name: str):
-#     if re.search(name, "hello"):
-#         interaction.response.send_message(f"Adding making channel bots home.")
-#         interaction.channel.send("hello")
+@tree.command(name = "dchannel", description="Set bots home.", guild = discord.Object(id = 938207947425710110))
+async def self(interaction: discord.Interaction, name: str):
+    if re.search(name, "hello"):
+        interaction.response.send_message(f"Adding making channel bots home.")
+        interaction.channel.send("hello")
 
 client.run(token)
